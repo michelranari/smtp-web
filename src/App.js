@@ -1,26 +1,48 @@
 import React from 'react';
-import logo from './logo.svg';
+import Login from './Login';
+import UploadRoute from './UploadRoute';
+import Charte from './Charte'
 import './App.css';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+  useHistory,
+  useLocation
+} from "react-router-dom";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Router>
+          <Switch>
+            <PrivateRoute path='/charte'>
+              <Charte />
+            </PrivateRoute>
+            <Route path="/">
+              <Login />
+            </Route>
+          </Switch>
+      </Router>
     </div>
   );
 }
+
+// ... rest is the props of of the private route
+const PrivateRoute = ({ children, ...rest }) => {
+  console.log("here");
+  let access = localStorage.getItem('token') !== null;
+  console.log(access);
+  return (
+    <Route {...rest} render={(props) =>
+        access ?
+        children
+        : <Redirect to='/'/>
+      }
+    />
+  )
+}
+
 
 export default App;
