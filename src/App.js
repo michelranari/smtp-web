@@ -1,48 +1,36 @@
-import React from 'react';
-import Login from './Login';
-import UploadRoute from './UploadRoute';
-import Charte from './Charte'
-import './App.css';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-  useHistory,
-  useLocation
-} from "react-router-dom";
+import React, { Component } from 'react';
+import { Router } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
+import { Chart } from 'react-chartjs-2';
+import { ThemeProvider } from '@material-ui/styles';
+import validate from 'validate.js';
 
-function App() {
-  return (
-    <div className="App">
-      <Router>
-          <Switch>
-            <PrivateRoute path='/charte'>
-              <Charte />
-            </PrivateRoute>
-            <Route path="/">
-              <Login />
-            </Route>
-          </Switch>
-      </Router>
-    </div>
-  );
+import { chartjs } from './helpers';
+import theme from './theme';
+import 'react-perfect-scrollbar/dist/css/styles.css';
+import './assets/scss/index.scss';
+import validators from './common/validators';
+import Routes from './Routes';
+
+const browserHistory = createBrowserHistory();
+
+Chart.helpers.extend(Chart.elements.Rectangle.prototype, {
+  draw: chartjs.draw
+});
+
+validate.validators = {
+  ...validate.validators,
+  ...validators
+};
+
+export default class App extends Component {
+  render() {
+    return (
+      <ThemeProvider theme={theme}>
+        <Router history={browserHistory}>
+          <Routes />
+        </Router>
+      </ThemeProvider>
+    );
+  }
 }
-
-// ... rest is the props of of the private route
-const PrivateRoute = ({ children, ...rest }) => {
-  console.log("here");
-  let access = localStorage.getItem('token') !== null;
-  console.log(access);
-  return (
-    <Route {...rest} render={(props) =>
-        access ?
-        children
-        : <Redirect to='/'/>
-      }
-    />
-  )
-}
-
-
-export default App;
