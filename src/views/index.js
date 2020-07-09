@@ -7,3 +7,4 @@ export { default as Settings } from './Settings';
 export { default as SignIn } from './SignIn';
 export { default as Typography } from './Typography';
 export { default as UserList } from './UserList';
+export { default as Charte } from './Charte';

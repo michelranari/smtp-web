@@ -14,9 +14,9 @@ import {
   Settings as SettingsView,
   SignIn as SignInView,
   NotFound as NotFoundView,
+  Charte as Charte
 } from './views';
 
-import Charte from './views/Charte/Charte';
 
 const Routes = () => {
   return (
